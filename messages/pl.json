@@ -1,0 +1,217 @@
+{
+  "metadata": {
+    "home": {
+      "title": "Clist — Znajdź prywatną szkołę w Polsce",
+      "description": "Agregator prywatnych szkół w Polsce. Porównuj szkoły według miasta, języka nauczania, metodyki i kosztów."
+    },
+    "schools": {
+      "title": "Prywatne szkoły w Polsce — katalog i wyszukiwarka | Clist",
+      "description": "Znajdź najlepszą prywatną szkołę w Polsce. Filtruj według miasta, języka nauczania, metodyki i kosztów. Aktualne dane o 1000+ szkołach.",
+      "ogTitle": "Prywatne szkoły w Polsce — katalog i wyszukiwarka",
+      "ogDescription": "Znajdź najlepszą prywatną szkołę w Polsce. Filtruj według miasta, języka nauczania, metodyki i kosztów."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Znajdź prywatną szkołę w Polsce",
+      "subtitle": "Porównuj ponad 1\u00a0000 szkół według miasta, języka nauczania, metodyki i kosztów — wszystko w jednym miejscu.",
+      "cta": "Zobacz wszystkie szkoły"
+    },
+    "cities": {
+      "heading": "Popularne miasta",
+      "warszawa": "Warszawa",
+      "krakow": "Kraków",
+      "wroclaw": "Wrocław",
+      "gdansk": "Gdańsk",
+      "poznan": "Poznań",
+      "katowice": "Katowice"
+    },
+    "usp": {
+      "heading": "Dlaczego Clist?",
+      "search": {
+        "title": "Inteligentne wyszukiwanie",
+        "text": "Filtrowanie według 10+ parametrów: język nauczania, metodyka, cena, etapy edukacji."
+      },
+      "location": {
+        "title": "Każde miasto w Polsce",
+        "text": "Baza danych obejmuje szkoły z całego kraju — od dużych miast po małe gminy."
+      },
+      "data": {
+        "title": "Aktualne dane",
+        "text": "Informacje są zbierane automatycznie z oficjalnych rejestrów i stron internetowych szkół."
+      },
+      "score": {
+        "title": "Ocena kompletności",
+        "text": "Każda karta zawiera wskaźnik wiarygodności danych, żebyś wiedział, czemu ufać."
+      }
+    }
+  },
+  "schools": {
+    "title": "Prywatne szkoły w Polsce",
+    "found": "Znaleziono szkół: {count}",
+    "pagination": {
+      "prev": "Wstecz",
+      "next": "Dalej",
+      "page": "Strona {current} z {total}"
+    },
+    "viewToggle": {
+      "grid": "Siatka",
+      "map": "Mapa"
+    }
+  },
+  "map": {
+    "noCoordinates": "Brak danych lokalizacji",
+    "priceOnRequest": "Cena na zapytanie",
+    "openSchool": "Otwórz stronę szkoły",
+    "currency": "PLN/rok",
+    "loading": "Ładowanie mapy..."
+  },
+  "filters": {
+    "loading": "Ładowanie filtrów...",
+    "search": {
+      "label": "Wyszukaj",
+      "placeholder": "Nazwa szkoły..."
+    },
+    "sort": {
+      "label": "Sortowanie cen",
+      "default": "Domyślnie",
+      "asc": "Najtańsze najpierw",
+      "desc": "Najdroższe najpierw"
+    },
+    "reset": "Resetuj wszystko",
+    "any": "Dowolne",
+    "price": {
+      "from": "Cena od ({suffix})",
+      "to": "do"
+    }
+  },
+  "card": {
+    "scoreTitle": "Kompletność danych o szkole",
+    "stages": "Etapy",
+    "stagePreschool": "Przedszkole",
+    "stageElementary13": "Klasy 1-3",
+    "stageElementary48": "Klasy 4-8",
+    "languages": "Języki:",
+    "currency": "PLN",
+    "priceOnRequest": "Cena na zapytanie",
+    "perYear": "za rok szkolny",
+    "dataVerified": "Dane zweryfikowane",
+    "approximate": "orientacyjnie",
+    "updatedAt": "zaktualizowano"
+  },
+  "grid": {
+    "empty": "Nie znaleziono szkół"
+  },
+  "ui": {
+    "showLess": "Ukryj",
+    "showMore": "... jeszcze {count}"
+  },
+  "schoolDetail": {
+    "back": "← Powrót do katalogu",
+    "closed": "Szkoła zamknięta",
+    "overview": "Przegląd",
+    "students": "Uczniów",
+    "boarding": "Internat",
+    "boardingYes": "Tak",
+    "boardingNo": "Nie",
+    "program": "Program",
+    "pricing": "Koszty",
+    "contacts": "Kontakt",
+    "address": "Adres",
+    "website": "Przejdź do strony",
+    "rspoId": "RSPO",
+    "updatedAt": "Zaktualizowano",
+    "noPricing": "Dane o kosztach nie zostały zebrane",
+    "noProgram": "Dane o programie nie zostały zebrane",
+    "entryFee": "Opłata wstępna",
+    "monthlyFee": "Opłata miesięczna",
+    "inclusions": "W cenie",
+    "discounts": "Zniżki",
+    "pricingApprox": "orientacyjnie",
+    "academicYear": "Rok szkolny",
+    "perMonth": "mies.",
+    "perYear": "za rok",
+    "oneTime": "jednorazowo",
+    "notProvided": "—",
+    "dataVerified": "Dane zweryfikowane"
+  },
+  "glossary": {
+    "languages": {
+      "pl": "Polski",
+      "en": "Angielski",
+      "de": "Niemiecki",
+      "fr": "Francuski",
+      "ru": "Rosyjski",
+      "es": "Hiszpański",
+      "it": "Włoski",
+      "he": "Hebrajski",
+      "uk": "Ukraiński",
+      "zh": "Chiński",
+      "ja": "Japoński",
+      "ar": "Arabski",
+      "ko": "Koreański"
+    },
+    "methodology": {
+      "montessori": "Metoda Montessori: dziecko samo wybiera aktywność, nauczyciel jest obserwatorem",
+      "waldorf": "Pedagogika waldorfska: nacisk na twórczość, rytm i rozwój duchowy",
+      "reggio_emilia": "Reggio Emilia: dzieci badają świat przez wspólne projekty i środowisko",
+      "democratic": "Szkoła demokratyczna: dzieci i dorośli wspólnie podejmują decyzje",
+      "traditional": "Klasyczna struktura nauczania z frontalnym przekazem wiedzy",
+      "steiner": "Pedagogika Steinera — odpowiednik podejścia waldorfskiego",
+      "hybrid": "Podejście mieszane: połączenie kilku metodyk",
+      "project_based": "Nauczanie przez projekty: wiedza zdobywana przez realne zadania"
+    },
+    "curriculum": {
+      "men": "Polska podstawa programowa (Ministerstwo Edukacji Narodowej)",
+      "ib": "International Baccalaureate — dyplom uznawany w 160+ krajach",
+      "cambridge": "Program Uniwersytetu Cambridge z międzynarodowym uznaniem",
+      "a_levels": "Brytyjskie egzaminy maturalne — odpowiednik polskiej matury",
+      "igcse": "Cambridgeski program szkoły podstawowej, 14–16 lat",
+      "gcse": "Brytyjskie państwowe egzaminy szkoły podstawowej",
+      "french_baccalaureate": "Matura francuska — uznawana we Francji i na świecie",
+      "matura": "Polska matura — egzamin końcowy szkoły średniej",
+      "cognia": "Cognia — międzynarodowa akredytacja placówek oświatowych"
+    },
+    "school_category": {
+      "private": "Szkoła prywatna z niepaństwowym finansowaniem",
+      "international": "Środowisko międzynarodowe: kilka języków i programy zagraniczne",
+      "bilingual": "Szkoła dwujęzyczna: nauka prowadzona w dwóch językach",
+      "catholic": "Szkoła z katolickim kierunkiem wychowawczym",
+      "social": "Szkoła społeczna — model spółdzielczy zarządzania",
+      "sport": "Profil sportowy z naciskiem na rozwój fizyczny",
+      "special": "Szkoła dla dzieci ze specjalnymi potrzebami edukacyjnymi"
+    },
+    "specialization": {
+      "sport": "Profil sportowy: pogłębione przygotowanie fizyczne",
+      "music": "Profil muzyczny: instrumenty, solfeż, chór",
+      "arts": "Profil artystyczny: rysunek, malarstwo, rzeźba",
+      "languages": "Profil językowy: pogłębiona nauka języków obcych",
+      "mathematics": "Profil matematyczny z rozszerzonym programem",
+      "science": "Profil przyrodniczy: fizyka, chemia, biologia",
+      "technology": "Profil technologiczny: informatyka i myślenie inżynierskie",
+      "catholic": "Wychowanie katolickie"
+    }
+  },
+  "fields": {
+    "nazwa": { "label": "Nazwa szkoły" },
+    "numer_rspo": { "label": "Numer RSPO" },
+    "updated_at": { "label": "Data aktualizacji" },
+    "website": { "label": "Oficjalna strona" },
+    "wojewodztwo": { "label": "Województwo" },
+    "powiat": { "label": "Powiat" },
+    "gmina": { "label": "Gmina" },
+    "miejscowosc": { "label": "Miasto" },
+    "adres": { "label": "Adres" },
+    "school_category": { "label": "Typ szkoły" },
+    "instruction_languages": { "label": "Języki nauczania" },
+    "curriculum": { "label": "Program" },
+    "methodology": { "label": "Metodyka" },
+    "specialization": { "label": "Specjalizacja" },
+    "wychowanie_przedszkolne": { "label": "Przedszkole" },
+    "i_etap_edukacyjny": { "label": "Szkoła podstawowa (klasy 1-3)" },
+    "ii_etap_edukacyjny": { "label": "Szkoła podstawowa (klasy 4-8)" },
+    "total_annual_cost": { "label": "Koszt roczny" },
+    "pricing_score": { "label": "Ocena ceny" },
+    "info_score": { "label": "Ocena informacyjna" }
+  }
+}

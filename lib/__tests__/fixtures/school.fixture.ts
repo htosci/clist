@@ -1,0 +1,48 @@
+import { SchoolShortCard } from '@/lib/schema-config'
+
+export const mockSchool: SchoolShortCard = {
+  numer_rspo: 12345,
+  nazwa: 'Prywatna Szkoła Testowa',
+  updated_at: '2024-01-01',
+  website: 'https://example.com',
+  wojewodztwo: 'Mazowieckie',
+  powiat: 'Warszawa',
+  gmina: 'Warszawa',
+  miejscowosc: 'Warszawa',
+  adres: 'ul. Testowa 1',
+  school_category: ['private', 'bilingual'],
+  instruction_languages: ['pl', 'en'],
+  curriculum: ['IB', 'MEN'],
+  methodology: ['Classic'],
+  specialization: ['Math'],
+  wychowanie_przedszkolne: true,
+  i_etap_edukacyjny: true,
+  ii_etap_edukacyjny: false,
+  total_annual_cost: 30000,
+  pricing_score: 9,
+  info_score: 8,
+}
+
+/** Школа с минимальными данными (все nullable поля = null) */
+export const mockSchoolMinimal: SchoolShortCard = {
+  numer_rspo: 99999,
+  nazwa: 'Минимальная школа',
+  updated_at: null,
+  website: null,
+  wojewodztwo: null,
+  powiat: null,
+  gmina: null,
+  miejscowosc: null,
+  adres: null,
+  school_category: null,
+  instruction_languages: null,
+  curriculum: null,
+  methodology: null,
+  specialization: null,
+  wychowanie_przedszkolne: null,
+  i_etap_edukacyjny: null,
+  ii_etap_edukacyjny: null,
+  total_annual_cost: null,
+  pricing_score: null,
+  info_score: null,
+}
