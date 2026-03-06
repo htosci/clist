@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react'
 import Home from '@/app/[locale]/page'
 import { mockUseTranslations } from '@/lib/__tests__/mocks/next-intl.mock'
 
+vi.mock('@/i18n/navigation')
+
 // Мокаем next-intl/server: getTranslations → реальные переводы ru.json, getLocale → 'pl'
 vi.mock('next-intl/server', async () => {
   const { mockUseTranslations } = await import('@/lib/__tests__/mocks/next-intl.mock')

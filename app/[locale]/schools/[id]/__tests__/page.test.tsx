@@ -5,6 +5,8 @@ import { mockUseTranslations } from '@/lib/__tests__/mocks/next-intl.mock'
 
 // --- Моки ---
 
+vi.mock('@/i18n/navigation')
+
 vi.mock('@/lib/supabase', () => ({
   getSchoolDetailAction: vi.fn(),
 }))

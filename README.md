@@ -77,6 +77,7 @@ app/
     layout.tsx            # Обёртка NextIntlClientProvider (без html/body)
     page.tsx              # Главная: Hero, кнопки-префильтры по городам, блок УТП
     schools/
+      layout.tsx          # Schools layout: import maplibre-gl CSS (не в root layout — не нужен на др. страницах)
       page.tsx            # Каталог школ — Server Component, параллельный fetch, metadata, OG
       loading.tsx         # Suspense fallback (8 skeleton-карточек)
       [id]/
@@ -84,6 +85,7 @@ app/
 
 i18n/
   routing.ts              # Конфиг локалей: ['pl', 'ru'], defaultLocale: 'pl', localePrefix: 'as-needed'
+  navigation.ts           # Routing helpers: Link, useRouter, usePathname, redirect, getPathname + getSchoolsPath(locale)
   request.ts              # Загрузка сообщений на сервере
 middleware.ts             # next-intl middleware — определяет локаль из URL/заголовков
 

@@ -1,7 +1,7 @@
 "use client"
 
-import { Fragment } from "react"
-import Link from "next/link"
+import { Fragment, useCallback } from "react"
+import { Link } from "@/i18n/navigation"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useTranslations, useLocale, useMessages } from "next-intl"
@@ -24,11 +24,10 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
   const tf = useTranslations('fields')
   const locale = useLocale()
   const messages = useMessages()
-  const tip = (field: string, value: string) => lookupGlossary(messages, field, value)
-  const schoolUrl = `${locale === 'pl' ? '' : `/${locale}`}/schools/${school.numer_rspo}`
+  const tip = useCallback((field: string, value: string) => lookupGlossary(messages, field, value), [messages])
 
   return (
-    <Link href={schoolUrl} aria-label={school.nazwa} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
+    <Link href={`/schools/${school.numer_rspo}`} aria-label={school.nazwa} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
     <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full border-muted/60 group">
       <CardHeader className="p-4 pb-2">
         {/* Категории + info_score + дата обновления */}

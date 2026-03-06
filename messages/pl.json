@@ -69,6 +69,7 @@
   },
   "filters": {
     "loading": "Ładowanie filtrów...",
+    "error": "Nie można załadować filtrów",
     "search": {
       "label": "Wyszukaj",
       "placeholder": "Nazwa szkoły..."

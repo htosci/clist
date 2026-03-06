@@ -7,6 +7,8 @@ import PaginationButton from '@/components/schools/pagination-button'
 
 // --- Моки для SchoolsPage ---
 
+vi.mock('@/i18n/navigation')
+
 // getTranslations и getLocale — серверные утилиты next-intl
 vi.mock('next-intl/server', async () => ({
   getTranslations: async (ns: string) => mockUseTranslations(ns),

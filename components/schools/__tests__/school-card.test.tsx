@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { SchoolCard } from '@/components/schools/school-card'
 import { mockSchool, mockSchoolMinimal } from '@/lib/__tests__/fixtures/school.fixture'
 import { SchoolShortCard } from '@/lib/schema-config'
+vi.mock('@/i18n/navigation')
+
 vi.mock('next-intl', async () => {
   const { mockUseTranslations, mockUseMessages } = await import('@/lib/__tests__/mocks/next-intl.mock')
   return {

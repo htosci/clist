@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { getSchoolsPath } from '@/i18n/navigation';
 import type { SchoolMapMarker } from '@/lib/schema-config';
 type Props = {
   schools: SchoolMapMarker[];
@@ -63,7 +64,7 @@ export default function SchoolMap({ schools }: Props) {
   const locale = useLocale();
   const t = useTranslations('map');
 
-  const schoolsPath = locale === 'pl' ? '/schools' : `/${locale}/schools`;
+  const schoolsPath = getSchoolsPath(locale);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -232,6 +233,8 @@ export default function SchoolMap({ schools }: Props) {
         mapRef.current = null;
       }
     };
+  // Намеренно пустые deps: карта инициализируется один раз при монтировании.
+  // schools и schoolsPath читаются актуальными через второй useEffect и closure в click-хендлерах.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

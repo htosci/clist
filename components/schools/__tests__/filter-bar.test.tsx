@@ -67,13 +67,28 @@ describe('FilterBar', () => {
     vi.useRealTimers()
   })
 
-  it('показывает loading-заглушку когда options = null', () => {
+  it('показывает loading-заглушку когда options = null и filterError не передан', () => {
     render(<FilterBar options={null} />)
     expect(screen.getByText(/Загрузка фильтров/)).toBeInTheDocument()
   })
 
   it('не рендерит select-поля когда options = null', () => {
     render(<FilterBar options={null} />)
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+  })
+
+  it('показывает сообщение об ошибке когда filterError = true', () => {
+    render(<FilterBar options={null} filterError={true} />)
+    expect(screen.getByText(/Не удалось загрузить фильтры/)).toBeInTheDocument()
+  })
+
+  it('не показывает loading-заглушку когда filterError = true', () => {
+    render(<FilterBar options={null} filterError={true} />)
+    expect(screen.queryByText(/Загрузка фильтров/)).not.toBeInTheDocument()
+  })
+
+  it('не рендерит select-поля когда filterError = true', () => {
+    render(<FilterBar options={null} filterError={true} />)
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
   })
 

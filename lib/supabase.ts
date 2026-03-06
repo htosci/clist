@@ -74,6 +74,11 @@ function applyFilters(query: any, params: Omit<SchoolsParams, 'page' | 'limit' |
   return query;
 }
 
+// Намеренное расхождение в обработке ошибок:
+// - getSchoolsAction бросает ошибку → Next.js перехватывает в error.tsx → страница ошибки.
+//   Каталог — критичный контент; молчаливый fallback вводил бы пользователя в заблуждение.
+// - getSchoolsForMapAction возвращает [] → карта рендерится пустой без сбоя.
+//   Карта — вспомогательный виджет; пустая карта лучше, чем сломанная страница.
 export async function getSchoolsAction(params: SchoolsParams) {
   const page = Math.max(1, parseInt(params.page || '1') || 1);
   const limit = Math.min(50, Math.max(1, parseInt(params.limit || '12') || 12));

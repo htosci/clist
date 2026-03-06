@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 
-import { X } from "lucide-react"
+import { X, AlertCircle } from "lucide-react"
 import { FilterOptions, getGeoFields, getFieldsByFilterType } from '@/lib/schema-config'
 import { CheckboxGroup } from "@/components/ui/checkbox-group"
 
@@ -26,7 +26,11 @@ const checkboxFields = getFieldsByFilterType('checkbox')
 const multiselectFields = getFieldsByFilterType('multiselect')
 const rangeFields = getFieldsByFilterType('range')
 
-export function FilterBar({ options }: { options: FilterOptions | null }) {
+type FilterBarProps =
+  | { options: FilterOptions; filterError?: never }
+  | { options: null; filterError: boolean }
+
+export function FilterBar({ options, filterError }: FilterBarProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -72,6 +76,13 @@ export function FilterBar({ options }: { options: FilterOptions | null }) {
   }, 400)
 
   const handleReset = () => router.push(pathname)
+
+  if (filterError) return (
+    <div className="p-4 flex items-center gap-2 text-destructive bg-destructive/10 rounded-xl">
+      <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+      <span>{t('error')}</span>
+    </div>
+  )
 
   if (!options) return <div className="p-4 animate-pulse bg-muted/20 rounded-xl">{t('loading')}</div>
 

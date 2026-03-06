@@ -2,6 +2,7 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import { getTranslations, getLocale } from "next-intl/server"
+import { getPathname } from "@/i18n/navigation"
 import { getSchoolsAction, getFilterOptions, getSchoolsForMapAction } from "@/lib/supabase"
 import type { SchoolsParams } from "@/lib/supabase"
 import { SchoolGrid } from "@/components/schools/school-grid"
@@ -37,7 +38,7 @@ export default async function SchoolsPage({
     getLocale(),
   ])
 
-  const schoolsPath = locale === 'pl' ? '/schools' : `/${locale}/schools`
+  const schoolsPath = getPathname({ href: '/schools', locale })
 
   const [schools, filterOptions, mapMarkers] = await Promise.all([
     isMapView ? Promise.resolve(null) : getSchoolsAction(filters),
@@ -57,7 +58,7 @@ export default async function SchoolsPage({
         <ViewToggle currentView={isMapView ? 'map' : 'grid'} />
       </div>
 
-      <FilterBar options={filterOptions} />
+      <FilterBar options={filterOptions} filterError={filterOptions === null} />
 
       {isMapView ? (
         <SchoolMapWrapper schools={mapMarkers} />

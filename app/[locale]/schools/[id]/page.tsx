@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations, getLocale } from 'next-intl/server'
+import { getPathname } from '@/i18n/navigation'
 import { getSchoolDetailAction } from '@/lib/supabase'
 import { SchoolDetailHeader } from '@/components/schools/school-detail-header'
 import { SchoolDetailProgram } from '@/components/schools/school-detail-program'
@@ -51,7 +52,7 @@ export default async function SchoolDetailPage({ params }: { params: Promise<Par
   if (!school) notFound()
 
   const t = await getTranslations('schoolDetail')
-  const schoolsPath = locale === 'pl' ? '/schools' : `/${locale}/schools`
+  const schoolsPath = getPathname({ href: '/schools', locale })
 
   return (
     <div className="container mx-auto py-8 max-w-3xl">

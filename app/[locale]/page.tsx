@@ -1,6 +1,7 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import { getTranslations, getLocale } from "next-intl/server"
+import { getPathname } from "@/i18n/navigation"
 import { Search, MapPin, BookOpen, BadgeCheck } from "lucide-react"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,7 +25,7 @@ export default async function Home() {
   const t = await getTranslations('home')
   const locale = await getLocale()
 
-  const schoolsPath = locale === 'pl' ? '/schools' : `/${locale}/schools`
+  const schoolsPath = getPathname({ href: '/schools', locale })
 
   const uspItems = [
     { icon: Search, titleKey: "usp.search.title", textKey: "usp.search.text" },
