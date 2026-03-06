@@ -17,6 +17,8 @@ export async function SchoolDetailContacts({ school }: Props) {
 
   if (!phone && !email && !website) return null
 
+  const phoneHrefValue = phone ? phoneHref(phone) : null
+
   return (
     <section className="space-y-3">
       <h2 className="text-base font-semibold text-muted-foreground uppercase tracking-wide">
@@ -25,13 +27,20 @@ export async function SchoolDetailContacts({ school }: Props) {
 
       <div className="flex flex-col gap-2 text-sm">
         {phone && (
-          <a
-            href={phoneHref(phone)}
-            className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
-          >
-            <Phone className="w-4 h-4 text-slate-400 shrink-0" />
-            {formatPhone(phone)}
-          </a>
+          phoneHrefValue ? (
+            <a
+              href={phoneHrefValue}
+              className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+            >
+              <Phone aria-hidden="true" className="w-4 h-4 text-slate-400 shrink-0" />
+              {formatPhone(phone)}
+            </a>
+          ) : (
+            <span className="flex items-center gap-2 text-foreground">
+              <Phone aria-hidden="true" className="w-4 h-4 text-slate-400 shrink-0" />
+              {formatPhone(phone)}
+            </span>
+          )
         )}
 
         {email && (
@@ -39,7 +48,7 @@ export async function SchoolDetailContacts({ school }: Props) {
             href={`mailto:${email}`}
             className="flex items-center gap-2 text-foreground hover:text-primary transition-colors break-all"
           >
-            <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+            <Mail aria-hidden="true" className="w-4 h-4 text-slate-400 shrink-0" />
             {email}
           </a>
         )}
@@ -51,7 +60,7 @@ export async function SchoolDetailContacts({ school }: Props) {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
           >
-            <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+            <Globe aria-hidden="true" className="w-4 h-4 text-slate-400 shrink-0" />
             {website.replace(/^https?:\/\//, '')}
           </a>
         )}
@@ -81,9 +90,10 @@ function formatPhone(phone: string): string {
   return phone
 }
 
-function phoneHref(phone: string): string {
+function phoneHref(phone: string): string | null {
   const digits = phone.replace(/\D/g, '')
   if (digits.startsWith('48') && digits.length === 11) return `tel:+${digits}`
   if (digits.length === 9) return `tel:+48${digits}`
-  return `tel:${phone}`
+  if (digits.length >= 5) return `tel:${digits}`  // safe: только цифры
+  return null  // нераспознанный формат
 }

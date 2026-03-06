@@ -8,6 +8,7 @@ import { SchoolGrid } from "@/components/schools/school-grid"
 import { FilterBar } from "@/components/schools/filter-bar"
 import { ViewToggle } from "@/components/schools/view-toggle"
 import { SchoolMapWrapper } from "@/components/schools/school-map-wrapper"
+import PaginationButton from "@/components/schools/pagination-button"
 import Loading from "./loading"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -50,7 +51,7 @@ export default async function SchoolsPage({
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
           <p className="text-muted-foreground">
-            {t('found', { count: isMapView ? mapMarkers.length : schools!.count })}
+            {t('found', { count: isMapView ? mapMarkers.length : (schools?.count ?? 0) })}
           </p>
         </div>
         <ViewToggle currentView={isMapView ? 'map' : 'grid'} />
@@ -63,28 +64,28 @@ export default async function SchoolsPage({
       ) : (
         <Suspense key={JSON.stringify(filters)} fallback={<Loading />}>
           <div className="space-y-10">
-            <SchoolGrid schools={schools!.data} />
+            <SchoolGrid schools={schools?.data ?? []} />
 
-            {schools!.totalPages > 1 && (
+            {(schools?.totalPages ?? 0) > 1 && (
               <div className="flex flex-col items-center justify-center gap-4 border-t pt-8">
                 <div className="flex items-center gap-2">
                   <PaginationButton
                     params={filters}
-                    targetPage={schools!.page - 1}
-                    disabled={schools!.page <= 1}
+                    targetPage={(schools?.page ?? 1) - 1}
+                    disabled={(schools?.page ?? 1) <= 1}
                     basePath={schoolsPath}
                   >
                     {t('pagination.prev')}
                   </PaginationButton>
 
                   <div className="text-sm font-medium">
-                    {t('pagination.page', { current: schools!.page, total: schools!.totalPages })}
+                    {t('pagination.page', { current: schools?.page ?? 1, total: schools?.totalPages ?? 1 })}
                   </div>
 
                   <PaginationButton
                     params={filters}
-                    targetPage={schools!.page + 1}
-                    disabled={schools!.page >= schools!.totalPages}
+                    targetPage={(schools?.page ?? 1) + 1}
+                    disabled={(schools?.page ?? 1) >= (schools?.totalPages ?? 1)}
                     basePath={schoolsPath}
                   >
                     {t('pagination.next')}
@@ -96,41 +97,5 @@ export default async function SchoolsPage({
         </Suspense>
       )}
     </div>
-  )
-}
-
-export function PaginationButton({
-  params,
-  targetPage,
-  disabled,
-  children,
-  basePath = '/schools',
-}: {
-  params: Record<string, string | undefined>,
-  targetPage: number,
-  disabled: boolean,
-  children: React.ReactNode,
-  basePath?: string,
-}) {
-  if (disabled) {
-    return (
-      <button disabled className="px-4 py-2 text-sm border rounded-md opacity-50 cursor-not-allowed bg-muted">
-        {children}
-      </button>
-    )
-  }
-
-  const newParams = new URLSearchParams(
-    Object.entries(params).filter((entry): entry is [string, string] => entry[1] !== undefined)
-  )
-  newParams.set('page', targetPage.toString())
-
-  return (
-    <a
-      href={`${basePath}?${newParams.toString()}`}
-      className="px-4 py-2 text-sm border rounded-md hover:bg-accent transition-colors"
-    >
-      {children}
-    </a>
   )
 }

@@ -56,7 +56,8 @@
     },
     "viewToggle": {
       "grid": "Сетка",
-      "map": "Карта"
+      "map": "Карта",
+      "groupLabel": "Вид отображения"
     }
   },
   "map": {
@@ -133,7 +134,8 @@
     "perYear": "за год",
     "oneTime": "единоразово",
     "notProvided": "—",
-    "dataVerified": "Данные проверены"
+    "dataVerified": "Данные проверены",
+    "currency": "PLN"
   },
   "glossary": {
     "languages": {

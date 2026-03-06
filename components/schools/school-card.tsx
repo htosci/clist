@@ -15,7 +15,7 @@ import {
   Clock
 } from "lucide-react"
 import { SchoolShortCard } from '@/lib/schema-config'
-import { cn, formatUpdatedAt } from "@/lib/utils"
+import { cn, formatUpdatedAt, getScoreClassName } from "@/lib/utils"
 import { ValueTooltip } from "@/components/ui/value-tooltip"
 import { lookupGlossary } from "@/lib/glossary"
 
@@ -28,7 +28,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
   const schoolUrl = `${locale === 'pl' ? '' : `/${locale}`}/schools/${school.numer_rspo}`
 
   return (
-    <Link href={schoolUrl} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
+    <Link href={schoolUrl} aria-label={school.nazwa} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
     <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full border-muted/60 group">
       <CardHeader className="p-4 pb-2">
         {/* Категории + info_score + дата обновления */}
@@ -50,9 +50,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
               title={t('scoreTitle')}
               className={cn(
                 "text-[10px] font-semibold ml-auto border-none cursor-help",
-                school.info_score >= 7 ? "bg-green-50 text-green-700" :
-                school.info_score >= 4 ? "bg-yellow-50 text-yellow-700" :
-                "bg-red-50 text-red-700"
+                getScoreClassName(school.info_score)
               )}
             >
               {school.info_score}/10
@@ -72,7 +70,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
 
         {/* География и Адрес */}
         <div className="flex items-start gap-2 text-sm text-muted-foreground">
-          <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-red-400" />
+          <MapPin aria-hidden="true" className="w-4 h-4 mt-0.5 shrink-0 text-red-400" />
           <span className="line-clamp-1">
             {[school.miejscowosc, school.adres].filter(Boolean).join(', ') || '—'}
           </span>
@@ -107,7 +105,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
           {/* Языки */}
           <div className="flex items-center gap-2">
             <span title={tf('instruction_languages.label')} className="shrink-0 cursor-help">
-              <Languages className="w-4 h-4 text-slate-400" />
+              <Languages aria-hidden="true" className="w-4 h-4 text-slate-400" />
             </span>
             <span className="font-medium select-text">
               {(school.instruction_languages ?? ['pl']).map((l, i, arr) => (
@@ -124,7 +122,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
           {/* Программа и Методика */}
           <div className="flex items-center gap-2">
             <span title={`${tf('curriculum.label')} / ${tf('methodology.label')}`} className="shrink-0 cursor-help">
-              <GraduationCap className="w-4 h-4 text-slate-400" />
+              <GraduationCap aria-hidden="true" className="w-4 h-4 text-slate-400" />
             </span>
             <span className="text-muted-foreground line-clamp-1 select-text">
               {(school.curriculum ?? ['MEN']).map((c, i, arr) => (
@@ -151,7 +149,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
           {school.specialization && school.specialization.length > 0 && (
             <div className="flex items-center gap-2">
               <span title={tf('specialization.label')} className="shrink-0 cursor-help">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+                <Sparkles aria-hidden="true" className="w-4 h-4 text-amber-400" />
               </span>
               <span className="text-muted-foreground italic line-clamp-1 select-text">
                 {school.specialization.map((s, i, arr) => (
@@ -170,7 +168,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5 font-bold text-base text-primary">
               <span title={tf('total_annual_cost.label')} className="cursor-help shrink-0">
-                <Banknote className="w-4 h-4" />
+                <Banknote aria-hidden="true" className="w-4 h-4" />
               </span>
               {school.total_annual_cost
                 ? `${school.total_annual_cost.toLocaleString()} ${t('currency')}`
@@ -199,7 +197,7 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
         {/* Дата обновления */}
         {school.updated_at && (
           <div className="flex items-center gap-1 text-[10px] text-muted-foreground/60">
-            <Clock className="w-3 h-3" />
+            <Clock aria-hidden="true" className="w-3 h-3" />
             <span>{t('updatedAt')} {formatUpdatedAt(school.updated_at, locale)}</span>
           </div>
         )}
@@ -208,9 +206,6 @@ export function SchoolCard({ school }: { school: SchoolShortCard }) {
     </Link>
   )
 }
-
-// formatUpdatedAt реэкспортируется из lib/utils для обратной совместимости
-export { formatUpdatedAt }
 
 /**
  * Вспомогательный компонент для значков этапов

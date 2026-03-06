@@ -16,15 +16,18 @@ interface Params {
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { id } = await params
+  if (isNaN(Number(id))) return {}
+
   const school = await getSchoolDetailAction(Number(id))
   if (!school) return {}
 
+  const t = await getTranslations('schoolDetail')
   const title = `${school.nazwa} — ${school.miejscowosc ?? ''} | Clist`
   const description = [
     school.typ,
     school.miejscowosc,
     school.curriculum?.join(', '),
-    school.total_annual_cost ? `${school.total_annual_cost.toLocaleString()} PLN/rok` : null,
+    school.total_annual_cost ? `${school.total_annual_cost.toLocaleString()} ${t('currency')}` : null,
   ]
     .filter(Boolean)
     .join(' · ')
@@ -38,6 +41,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 export default async function SchoolDetailPage({ params }: { params: Promise<Params> }) {
   const { id } = await params
+  if (isNaN(Number(id))) notFound()
+
   const [school, locale] = await Promise.all([
     getSchoolDetailAction(Number(id)),
     getLocale(),

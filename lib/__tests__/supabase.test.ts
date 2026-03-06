@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mockSchool } from './fixtures/school.fixture'
+import { mockSchoolDetail } from './fixtures/schoolDetail.fixture'
 import { mockFilterOptions } from './fixtures/filterOptions.fixture'
 
 // --- Моки ---
@@ -15,6 +16,7 @@ const mockQuery = vi.hoisted(() => {
     lte: vi.fn(),
     order: vi.fn(),
     range: vi.fn(),
+    single: vi.fn(),
   }
   // Настраиваем chain: каждый метод возвращает тот же объект
   obj.select.mockReturnValue(obj)
@@ -25,6 +27,7 @@ const mockQuery = vi.hoisted(() => {
   obj.lte.mockReturnValue(obj)
   obj.order.mockReturnValue(obj)
   obj.range.mockResolvedValue({ data: [], count: 0, error: null })
+  obj.single.mockResolvedValue({ data: null, error: null })
   return obj
 })
 
@@ -54,6 +57,7 @@ function resetChain() {
   mockQuery.lte.mockReturnValue(mockQuery)
   mockQuery.order.mockReturnValue(mockQuery)
   mockQuery.range.mockResolvedValue({ data: [], count: 0, error: null })
+  mockQuery.single.mockResolvedValue({ data: null, error: null })
 }
 
 // --- Тесты ---
@@ -258,6 +262,50 @@ describe('getSchoolsForMapAction', () => {
     const { getSchoolsForMapAction } = await import('@/lib/supabase')
     await getSchoolsForMapAction({ min_fee: '20000' })
     expect(mockQuery.gte).toHaveBeenCalledWith('total_annual_cost', 20000)
+  })
+})
+
+describe('getSchoolDetailAction', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    resetChain()
+  })
+
+  it('возвращает данные школы когда найдена', async () => {
+    mockQuery.single.mockResolvedValueOnce({ data: mockSchoolDetail, error: null })
+    const { getSchoolDetailAction } = await import('@/lib/supabase')
+    const result = await getSchoolDetailAction(12345)
+    expect(result).toEqual(mockSchoolDetail)
+  })
+
+  it('возвращает null при ошибке Supabase', async () => {
+    mockQuery.single.mockResolvedValueOnce({ data: null, error: new Error('DB error') })
+    const { getSchoolDetailAction } = await import('@/lib/supabase')
+    const result = await getSchoolDetailAction(12345)
+    expect(result).toBeNull()
+  })
+
+  it('возвращает null когда data = null (не найдена)', async () => {
+    mockQuery.single.mockResolvedValueOnce({ data: null, error: null })
+    const { getSchoolDetailAction } = await import('@/lib/supabase')
+    const result = await getSchoolDetailAction(99999)
+    expect(result).toBeNull()
+  })
+
+  it('фильтрует sentinel "None" из specialization', async () => {
+    const schoolWithNone = { ...mockSchoolDetail, specialization: ['Math', 'None', 'Art'] }
+    mockQuery.single.mockResolvedValueOnce({ data: schoolWithNone, error: null })
+    const { getSchoolDetailAction } = await import('@/lib/supabase')
+    const result = await getSchoolDetailAction(12345)
+    expect(result?.specialization).toEqual(['Math', 'Art'])
+  })
+
+  it('не трогает specialization без sentinel', async () => {
+    const schoolNoNone = { ...mockSchoolDetail, specialization: ['Math', 'Art'] }
+    mockQuery.single.mockResolvedValueOnce({ data: schoolNoNone, error: null })
+    const { getSchoolDetailAction } = await import('@/lib/supabase')
+    const result = await getSchoolDetailAction(12345)
+    expect(result?.specialization).toEqual(['Math', 'Art'])
   })
 })
 

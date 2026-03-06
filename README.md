@@ -33,10 +33,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ### 2. Команды
 
 ```bash
-npm run dev      # dev server на порту 3000
-npm run build    # production build
-npm run start    # запуск production
-npm run lint     # ESLint
+npm run dev           # dev server на порту 3000
+npm run build         # production build
+npm run start         # запуск production
+npm run lint          # ESLint
+npm run test          # Vitest watch
+npm run test:coverage # однократный прогон + coverage
 ```
 
 ---
@@ -45,8 +47,8 @@ npm run lint     # ESLint
 
 ### Server / Client разделение
 
-- **Server Components** (`app/[locale]/schools/page.tsx`, `school-grid.tsx`) — запрашивают данные из Supabase, передают в клиентские компоненты
-- **Client Components** (`filter-bar.tsx`, `school-card.tsx`) — интерактивность, фильтры, анимации
+- **Server Components** (`app/[locale]/schools/page.tsx`, `school-grid.tsx`, `school-detail-*.tsx`) — запрашивают данные из Supabase, передают в клиентские компоненты
+- **Client Components** (`filter-bar.tsx`, `school-card.tsx`, `school-map.tsx`, `view-toggle.tsx`) — интерактивность, фильтры, анимации, карта
 
 ### URL как хранилище состояния фильтров
 
@@ -70,12 +72,15 @@ npm run lint     # ESLint
 app/
   layout.tsx              # Root layout: <html lang={locale}> через getLocale(), шрифты Geist
   robots.ts               # Генерирует /robots.txt
+  sitemap.ts              # Генерирует /sitemap.xml через getSchoolsForSitemap()
   [locale]/               # Локализованные маршруты (pl — без префикса, ru — /ru/)
     layout.tsx            # Обёртка NextIntlClientProvider (без html/body)
     page.tsx              # Главная: Hero, кнопки-префильтры по городам, блок УТП
     schools/
       page.tsx            # Каталог школ — Server Component, параллельный fetch, metadata, OG
       loading.tsx         # Suspense fallback (8 skeleton-карточек)
+      [id]/
+        page.tsx          # Детальная страница школы + generateMetadata
 
 i18n/
   routing.ts              # Конфиг локалей: ['pl', 'ru'], defaultLocale: 'pl', localePrefix: 'as-needed'
@@ -92,12 +97,22 @@ components/
     school-card.tsx       # Карточка школы — info_score badge, updated_at, pricing indicator
     school-grid.tsx       # Адаптивная сетка (1/2/3/4 колонки)
     school-card-skeleton.tsx
+    pagination-button.tsx # Кнопка пагинации
+    view-toggle.tsx       # Переключатель список/карта — Client Component
+    school-map.tsx        # MapLibre GL JS карта с кластеризацией — Client Component
+    school-detail-header.tsx    # Заголовок детальной страницы: название, бейджи, сайт
+    school-detail-program.tsx   # Секция: этапы, языки, программа, методика
+    school-detail-pricing.tsx   # Секция: таблица цен / simple pricing
+    school-detail-contacts.tsx  # Секция: телефон, email, сайт
+    school-detail-address.tsx   # Секция: адрес, интерактивная мини-карта
   ui/                     # shadcn/ui компоненты (badge, card, select, …) + checkbox-group.tsx
 
 lib/
   supabase.ts             # Supabase client + getSchoolsAction + getFilterOptions
-  schema-config.ts        # SSOT всех полей, типы SchoolShortCard и FilterOptions
-  utils.ts                # cn() (clsx + tailwind-merge)
+                          # + getSchoolDetailAction + getSchoolsForMapAction + getSchoolsForSitemap
+  schema-config.ts        # SSOT всех полей, типы SchoolShortCard, SchoolDetail, FilterOptions
+  glossary.ts             # lookupGlossary — термины для ValueTooltip
+  utils.ts                # cn(), formatUpdatedAt(), isSafeUrl(), getScoreClassName()
 ```
 
 ---
@@ -109,6 +124,8 @@ lib/
 | Объект | Описание |
 |--------|----------|
 | `v_school_short_cards` | Вью для карточек в каталоге |
+| `v_school_detail` | Вью для детальной страницы (полные данные) |
+| `v_school_map` | Вью для маркеров карты (координаты + минимум полей) |
 | `get_unique_filter_values()` | RPC — уникальные значения для dropdown-фильтров |
 
 ### Ключевые поля `v_school_short_cards`
@@ -135,6 +152,19 @@ lib/
 
 **Сортировка по умолчанию:** `info_score DESC` → `nazwa ASC`
 **Пагинация:** 12 школ на страницу
+
+---
+
+## Тесты
+
+274+ тестов через Vitest + Testing Library (jsdom):
+
+```bash
+npm run test          # watch-режим
+npm run test:coverage # однократный прогон с покрытием
+```
+
+Coverage исключает `components/ui/**` (shadcn) и `*.config.*`.
 
 ---
 

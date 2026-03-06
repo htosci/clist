@@ -29,17 +29,8 @@ export type SchoolsParams = {
   limit?: string;
 };
 
-export async function getSchoolsAction(params: SchoolsParams) {
-  const page = parseInt(params.page || "1");
-  const limit = parseInt(params.limit || "12");
-  const from = (page - 1) * limit;
-  const to = from + limit - 1;
-
-  // Инициализируем запрос к View
-  let query = supabase
-    .from('v_school_short_cards')
-    .select('*', { count: 'exact' });
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function applyFilters(query: any, params: Omit<SchoolsParams, 'page' | 'limit' | 'sort'>): any {
   // 1. Поиск по названию
   if (params.query) {
     query = query.ilike('nazwa', `%${params.query}%`);
@@ -75,10 +66,26 @@ export async function getSchoolsAction(params: SchoolsParams) {
     if (rangeConfig) {
       const minValue = (params as Record<string, string | undefined>)[rangeConfig.min];
       const maxValue = (params as Record<string, string | undefined>)[rangeConfig.max];
-      if (minValue) query = query.gte(key, parseInt(minValue));
-      if (maxValue) query = query.lte(key, parseInt(maxValue));
+      const minParsed = parseInt(minValue ?? ''); if (Number.isFinite(minParsed)) query = query.gte(key, minParsed);
+      const maxParsed = parseInt(maxValue ?? ''); if (Number.isFinite(maxParsed)) query = query.lte(key, maxParsed);
     }
   }
+
+  return query;
+}
+
+export async function getSchoolsAction(params: SchoolsParams) {
+  const page = Math.max(1, parseInt(params.page || '1') || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(params.limit || '12') || 12));
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  // Инициализируем запрос к View
+  let query = supabase
+    .from('v_school_short_cards')
+    .select('*', { count: 'exact' });
+
+  query = applyFilters(query, params);
 
   // 6. Сортировка
   if (params.sort === 'price_asc') {
@@ -113,40 +120,7 @@ export async function getSchoolsAction(params: SchoolsParams) {
 export async function getSchoolsForMapAction(params: Omit<SchoolsParams, 'page' | 'limit' | 'sort'>): Promise<SchoolMapMarker[]> {
   let query = supabase.from('v_school_map').select('*');
 
-  if (params.query) {
-    query = query.ilike('nazwa', `%${params.query}%`);
-  }
-
-  for (const [key] of getGeoFields()) {
-    const value = (params as Record<string, string | undefined>)[key];
-    if (value && value !== 'all') {
-      query = query.eq(key, value);
-    }
-  }
-
-  for (const [key] of getFieldsByFilterType('checkbox')) {
-    const value = (params as Record<string, string | undefined>)[key];
-    if (value === 'true') {
-      query = query.eq(key, true);
-    }
-  }
-
-  for (const [key] of getFieldsByFilterType('multiselect')) {
-    const value = (params as Record<string, string | undefined>)[key];
-    if (value && value !== 'all') {
-      query = query.contains(key, value.split(','));
-    }
-  }
-
-  for (const [key, config] of getFieldsByFilterType('range')) {
-    const rangeConfig = (config as { rangeParams?: { min: string; max: string } }).rangeParams;
-    if (rangeConfig) {
-      const minValue = (params as Record<string, string | undefined>)[rangeConfig.min];
-      const maxValue = (params as Record<string, string | undefined>)[rangeConfig.max];
-      if (minValue) query = query.gte(key, parseInt(minValue));
-      if (maxValue) query = query.lte(key, parseInt(maxValue));
-    }
-  }
+  query = applyFilters(query, params);
 
   const { data, error } = await query;
 
@@ -166,8 +140,19 @@ export const getSchoolDetailAction = cache(async function getSchoolDetailAction(
     .single();
 
   if (error || !data) return null;
+  if (data.specialization) {
+    data.specialization = data.specialization.filter((s: string) => s !== 'None');
+  }
   return data as SchoolDetail;
 });
+
+export async function getSchoolsForSitemap() {
+  const { data } = await supabase
+    .from('v_school_short_cards')
+    .select('numer_rspo, updated_at')
+    .limit(50000);
+  return data ?? [];
+}
 
 export const getFilterOptions = unstable_cache(
   async () => {

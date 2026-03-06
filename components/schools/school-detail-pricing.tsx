@@ -50,8 +50,8 @@ function SimplePricing({
 }) {
   return (
     <div className="flex items-center gap-2 text-xl font-bold text-primary">
-      <Banknote className="w-5 h-5" />
-      {cost.toLocaleString()} PLN
+      <Banknote aria-hidden="true" className="w-5 h-5" />
+      {cost.toLocaleString()} {t('currency')}
       <span className="text-sm font-normal text-muted-foreground">{t('perYear')}</span>
     </div>
   )
@@ -73,19 +73,20 @@ function PricingTable({
       )}
       <div className="overflow-x-auto rounded-lg border">
         <table className="w-full text-sm">
+          <caption className="sr-only">{t('pricing')}</caption>
           <thead>
             <tr className="border-b bg-muted/40">
-              <th className="px-3 py-2 text-left font-medium text-muted-foreground">{t('program')}</th>
-              <th className="px-3 py-2 text-right font-medium text-muted-foreground">{t('entryFee')}</th>
-              <th className="px-3 py-2 text-right font-medium text-muted-foreground">{t('monthlyFee')}</th>
-              <th className="px-3 py-2 text-left font-medium text-muted-foreground hidden sm:table-cell">
+              <th scope="col" className="px-3 py-2 text-left font-medium text-muted-foreground">{t('program')}</th>
+              <th scope="col" className="px-3 py-2 text-right font-medium text-muted-foreground">{t('entryFee')}</th>
+              <th scope="col" className="px-3 py-2 text-right font-medium text-muted-foreground">{t('monthlyFee')}</th>
+              <th scope="col" className="px-3 py-2 text-left font-medium text-muted-foreground hidden sm:table-cell">
                 {t('inclusions')}
               </th>
             </tr>
           </thead>
           <tbody>
-            {pricing.fee_structure.map((item, i) => (
-              <PricingRow key={i} item={item} t={t} />
+            {pricing.fee_structure.map((item) => (
+              <PricingRow key={item.category} item={item} t={t} />
             ))}
           </tbody>
         </table>
@@ -107,7 +108,7 @@ function PricingRow({
       <td className="px-3 py-2.5 text-right tabular-nums">
         {item.entry_fee ? (
           <span>
-            {item.entry_fee.amount.toLocaleString()} PLN
+            {item.entry_fee.amount.toLocaleString()} {t('currency')}
             <span className="text-xs text-muted-foreground ml-1">({t('oneTime')})</span>
           </span>
         ) : (
@@ -117,7 +118,7 @@ function PricingRow({
       <td className="px-3 py-2.5 text-right tabular-nums">
         {item.monthly_fee ? (
           <span>
-            {item.monthly_fee.amount.toLocaleString()} PLN
+            {item.monthly_fee.amount.toLocaleString()} {t('currency')}
             <span className="text-xs text-muted-foreground ml-1">/{t('perMonth')}</span>
             {item.monthly_fee.is_approximate && (
               <span className="text-xs text-yellow-600 ml-1">~</span>

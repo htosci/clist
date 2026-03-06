@@ -90,12 +90,12 @@ export function FilterBar({ options }: { options: FilterOptions | null }) {
         </div>
 
         <div>
-          <Label>{t('sort.label')}</Label>
+          <Label htmlFor="sort-select">{t('sort.label')}</Label>
           <Select
             value={searchParams.get('sort') || "default"}
             onValueChange={(v) => updateFilters({ sort: v === 'default' ? null : v })}
           >
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger id="sort-select"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="default">{t('sort.default')}</SelectItem>
               <SelectItem value="price_asc">{t('sort.asc')}</SelectItem>
@@ -106,7 +106,7 @@ export function FilterBar({ options }: { options: FilterOptions | null }) {
 
         <div className="flex items-end">
           <Button variant="outline" onClick={handleReset} className="w-full">
-            <X className="w-4 h-4 mr-2" /> {t('reset')}
+            <X aria-hidden="true" className="w-4 h-4 mr-2" /> {t('reset')}
           </Button>
         </div>
       </div>

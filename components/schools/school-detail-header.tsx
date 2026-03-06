@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { AlertTriangle, Link as LinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { SchoolDetail } from '@/lib/schema-config'
-import { cn, isSafeUrl } from '@/lib/utils'
+import { cn, isSafeUrl, getScoreClassName } from '@/lib/utils'
 import { lookupGlossary } from '@/lib/glossary'
 
 interface Props {
@@ -59,11 +59,7 @@ export async function SchoolDetailHeader({ school, backHref }: Props) {
             title={tCard('scoreTitle')}
             className={cn(
               'text-sm font-semibold border-none shrink-0 cursor-help',
-              school.info_score >= 7
-                ? 'bg-green-50 text-green-700'
-                : school.info_score >= 4
-                  ? 'bg-yellow-50 text-yellow-700'
-                  : 'bg-red-50 text-red-700'
+              getScoreClassName(school.info_score)
             )}
           >
             {school.info_score}/10
@@ -78,7 +74,7 @@ export async function SchoolDetailHeader({ school, backHref }: Props) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
         >
-          <LinkIcon className="w-3.5 h-3.5" />
+          <LinkIcon aria-hidden="true" className="w-3.5 h-3.5" />
           {t('website')}
         </a>
       )}

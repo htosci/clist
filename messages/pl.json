@@ -56,7 +56,8 @@
     },
     "viewToggle": {
       "grid": "Siatka",
-      "map": "Mapa"
+      "map": "Mapa",
+      "groupLabel": "Widok wyświetlania"
     }
   },
   "map": {
@@ -133,7 +134,8 @@
     "perYear": "za rok",
     "oneTime": "jednorazowo",
     "notProvided": "—",
-    "dataVerified": "Dane zweryfikowane"
+    "dataVerified": "Dane zweryfikowane",
+    "currency": "PLN"
   },
   "glossary": {
     "languages": {

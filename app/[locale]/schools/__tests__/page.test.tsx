@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { mockUseTranslations } from '@/lib/__tests__/mocks/next-intl.mock'
 import { mockSchool } from '@/lib/__tests__/fixtures/school.fixture'
 import { mockFilterOptions } from '@/lib/__tests__/fixtures/filterOptions.fixture'
-import { PaginationButton } from '@/app/[locale]/schools/page'
+import PaginationButton from '@/components/schools/pagination-button'
 
 // --- Моки для SchoolsPage ---
 

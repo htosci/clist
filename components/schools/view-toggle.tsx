@@ -26,7 +26,7 @@ export function ViewToggle({ currentView }: { currentView: View }) {
   };
 
   return (
-    <div role="group" aria-label="Вид отображения" className="flex items-center gap-1 border rounded-lg p-1 bg-muted/40 shrink-0">
+    <div role="group" aria-label={t('viewToggle.groupLabel')} className="flex items-center gap-1 border rounded-lg p-1 bg-muted/40 shrink-0">
       <button
         onClick={() => switchTo('grid')}
         title={t('viewToggle.grid')}

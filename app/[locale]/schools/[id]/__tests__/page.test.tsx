@@ -48,10 +48,40 @@ vi.mock('@/components/schools/school-card', () => ({
 
 // --- Тесты ---
 
-import SchoolDetailPage from '@/app/[locale]/schools/[id]/page'
+import SchoolDetailPage, { generateMetadata } from '@/app/[locale]/schools/[id]/page'
 import { getSchoolDetailAction } from '@/lib/supabase'
 
 const mockGetSchoolDetail = vi.mocked(getSchoolDetailAction)
+
+describe('generateMetadata', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('возвращает {} для невалидного id ("abc") — не вызывает getSchoolDetailAction', async () => {
+    const result = await generateMetadata({ params: Promise.resolve({ id: 'abc' }) })
+    expect(result).toEqual({})
+    expect(mockGetSchoolDetail).not.toHaveBeenCalled()
+  })
+
+  it('возвращает {} если школа не найдена', async () => {
+    mockGetSchoolDetail.mockResolvedValue(null)
+    const result = await generateMetadata({ params: Promise.resolve({ id: '12345' }) })
+    expect(result).toEqual({})
+  })
+
+  it('формирует title с именем школы и городом', async () => {
+    mockGetSchoolDetail.mockResolvedValue(mockSchoolDetail)
+    const result = await generateMetadata({ params: Promise.resolve({ id: '12345' }) })
+    expect(result.title).toBe(`${mockSchoolDetail.nazwa} — ${mockSchoolDetail.miejscowosc} | Clist`)
+  })
+
+  it('включает openGraph с title', async () => {
+    mockGetSchoolDetail.mockResolvedValue(mockSchoolDetail)
+    const result = await generateMetadata({ params: Promise.resolve({ id: '12345' }) })
+    expect((result.openGraph as { title?: string })?.title).toBe(`${mockSchoolDetail.nazwa} — ${mockSchoolDetail.miejscowosc} | Clist`)
+  })
+})
 
 describe('SchoolDetailPage', () => {
   beforeEach(() => {
